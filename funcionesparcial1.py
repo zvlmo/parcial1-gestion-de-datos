@@ -258,7 +258,7 @@ def imprimir_menu()->None:
     menu = ["-------","1.Traer datos","2.Listar cantidad de heroes por raza","3.Listar personajes de cada raza",
             "4.Buscar que personajes tienen una habilidad","5.Jugar batalla de personajes",
             "6.Guardar Json",
-            "7.Leer Json","8.Borras historial","9.Salir"]
+            "7.Leer Json","8.Borras historial","9.Salir","10.Otorgar poder"]
     for i in menu:
         print(i)
         
@@ -330,7 +330,10 @@ def leer_json(guardado) ->None:
         guardado = json.load(file)
         for personaje in guardado['personaje']:
             print(f"{personaje['nombre']}---Poder de ataque->{personaje['poder_de_ataque']}---Habilidades: {personaje['habilidades']}")
-       
+            
+            
+            
+            
 def agregar_poder_ataque(lista:list)->None:
     """ 
     parameters: recibe como parametro la lista la cual traemos del csv en la funcion de menu
@@ -393,5 +396,7 @@ def aplicacion_DBZ(path:str):
                     system("cls")
                 case 9:
                     break
+                case 10:
+                    agregar_poder_ataque(lista_guerreros)
             opcion = mostrar_menu_principal()
             
