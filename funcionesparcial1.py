@@ -330,6 +330,28 @@ def leer_json(guardado) ->None:
         guardado = json.load(file)
         for personaje in guardado['personaje']:
             print(f"{personaje['nombre']}---Poder de ataque->{personaje['poder_de_ataque']}---Habilidades: {personaje['habilidades']}")
+       
+def agregar_poder_ataque(lista:list)->None:
+    """ 
+    parameters: recibe como parametro la lista la cual traemos del csv en la funcion de menu
+    breef agrega un 50% de poder de pelea y un 70% de poder de ataque a los saiyan
+    return no retorna nada ya que imprime por pantalla al ejecutarse
+    """
+    for saiyan in lista:
+        if 'Saiyan' in saiyan['raza']:
+            print(f"{saiyan['nombre']}")
+            saiyan['poder_pelea']=float(saiyan['poder_pelea'])
+            print(f"Poder pelea anterior: {saiyan['poder_pelea']}")
+            saiyan['poder_pelea']= saiyan['poder_pelea'] * 1.5
+            print(f"Poder pelea actua:{saiyan['poder_pelea']}")
+            saiyan['poder_ataque']=float(saiyan['poder_ataque'])
+            print(f"Poder ataque anterior: {saiyan['poder_ataque']}")
+            saiyan['poder_ataque']= saiyan['poder_ataque'] * 1.7
+            print(f"Poder ataque actua: {saiyan['poder_ataque']}")
+            saiyan['habilidades'] += '| Transformacion nivel dios'
+            print(f"Habilidades: {saiyan['habilidades'].split('|')}")
+            with open("saiyan_cambiados.csv", "a", encoding= "utf-8") as archivo:
+                archivo.writelines(f"Nombre: {saiyan['nombre']}, Poder de pelea---{saiyan['poder_pelea']},Poder ataque:--{saiyan['poder_ataque']}--{saiyan['habilidades'].split('|')}\n") 
 
 def aplicacion_DBZ(path:str):
 
