@@ -23,7 +23,7 @@ Return:lista_guerrero: una lista de diccionarios, donde cada diccionario represe
         return lista_guerrero
 
 #######################################################################################################################
-def crear_lista_algo(clave:str,lista_algo:list)->list:
+def crear_lista_caracteristica(clave:str,lista_caracteristica:list)->list:
     """ 
 Brief  Esta función toma una clave y una ruta de archivo como entrada y devuelve una lista de valores correspondientes a la clave en cada diccionario de la lista.
 Parameters:
@@ -32,32 +32,32 @@ clave (str): Una cadena que representa la clave del diccionario que se quiere ex
 lista: los datos que se obtienen del archivo csv
 Returns:
 
-lista_algo_creada (list): Una lista de valores extraídos de cada diccionario de la lista que corresponden a la clave proporcionada.
+lista_caracteristica_creada (list): Una lista de valores extraídos de cada diccionario de la lista que corresponden a la clave proporcionada.
     """
-    lista_algo_creada = []
-    for guerrero in lista_algo:
-        algo  = guerrero[clave]
-        lista_algo_creada.append(algo) 
-    return lista_algo_creada
+    lista_caracteristica_creada = []
+    for guerrero in lista_caracteristica:
+        caracteristica  = guerrero[clave]
+        lista_caracteristica_creada.append(caracteristica) 
+    return lista_caracteristica_creada
 
 def setear_lista(clave:str, lista:list)->set:
     """ 
 Parámetros: clave: una cadena de caracteres que indica la clave que se va a utilizar para crear la lista.
 Brief: setea la lista que recibe
-Return: lista_filtrada: una lista seteadad del valor que reciba el path.
+Return: lista_filtrada: una lista seteadad del valor que reciba 
     """
-    lista_recibe = crear_lista_algo(clave, lista)
+    lista_recibe = crear_lista_caracteristica(clave, lista)
     lista_filtrada = set(lista_recibe)
     return lista_filtrada
 def listar_cantidad_por_raza(clave:str,lista:list)->None:
     """ 
     Parámetros:clave (str): clave que se utilizará para filtrar la información del archivo.
                 lista: lista que se obtiene del archivo que se va a leer.
-Brief: Esta función recibe una clave y una lista, utiliza la función traer_datos_archivo y crear_lista_algo para crear una lista con la información que corresponde a la clave recibida. Luego, crea un diccionario con la cantidad de guerreros por raza y finalmente imprime la cantidad de guerreros por cada raza.
+Brief: Esta función recibe una clave y una lista, utiliza la función traer_datos_archivo y crear_lista_caracteristica para crear una lista con la información que corresponde a la clave recibida. Luego, crea un diccionario con la cantidad de guerreros por raza y finalmente imprime la cantidad de guerreros por cada raza.
 
 Return: None
     """
-    lista_info = crear_lista_algo(clave,lista)
+    lista_info = crear_lista_caracteristica(clave,lista)
     dicc = {}
     for contador_raza in lista_info:
         if contador_raza in dicc:
@@ -281,7 +281,7 @@ brief:su principal función es crear un archivo JSON con los personajes que cump
 y las habilidades de los que cumplen esa funcion. Sin embargo, en caso de existir algún error en la ejecución volvera al menu de inicio
 return: de retorno se guarda el nombre del archivo.json para dsp poder leerlo en otra funcion
     """
-    lista_raza = crear_lista_algo('raza', personajes)
+    lista_raza = crear_lista_caracteristica('raza', personajes)
     lista_habilidades = crear_lista_habilidades(personajes)
     diccionario_personajes = {}
     habilidad_ingresada = []
@@ -327,8 +327,12 @@ def leer_json(guardado) ->None:
             
             
             
-            
-def agregar_poder_ataque(lista:list)->None:
+def agregar_poder(poder:str, porcentaje:float):
+        poder_calcular = float(poder)
+        poder_resultado = poder_calcular * porcentaje
+        return poder_resultado        
+
+def agregar_poder_saiyans(lista:list)->None:
     """ 
     parameters: recibe como parametro la lista la cual traemos del csv en la funcion de menu
     breef agrega un 50% de poder de pelea y un 70% de poder de ataque a los saiyan
@@ -336,19 +340,15 @@ def agregar_poder_ataque(lista:list)->None:
     """
     for saiyan in lista:
         if 'Saiyan' in saiyan['raza']:
+            poder_pelea = agregar_poder(lista, saiyan['poder_pelea'], 1.5)
+            poder_ataque = agregar_poder(lista,saiyan['poder_ataque'], 1.7)
             print(f"{saiyan['nombre']}")
-            saiyan['poder_pelea']=float(saiyan['poder_pelea'])
-            print(f"Poder pelea anterior: {saiyan['poder_pelea']}")
-            saiyan['poder_pelea']= saiyan['poder_pelea'] * 1.5
-            print(f"Poder pelea actua:{saiyan['poder_pelea']}")
-            saiyan['poder_ataque']=float(saiyan['poder_ataque'])
-            print(f"Poder ataque anterior: {saiyan['poder_ataque']}")
-            saiyan['poder_ataque']= saiyan['poder_ataque'] * 1.7
-            print(f"Poder ataque actua: {saiyan['poder_ataque']}")
+            print(f"Poder de pelea actualizado: {poder_pelea}")
+            print(f"Poder de ataque actualizado: {poder_ataque}")
             saiyan['habilidades'] += '| Transformacion nivel dios'
             print(f"Habilidades: {saiyan['habilidades'].split('|')}")
             with open("saiyan_cambiados.csv", "a", encoding= "utf-8") as archivo:
-                archivo.writelines(f"Nombre: {saiyan['nombre']}, Poder de pelea---{saiyan['poder_pelea']},Poder ataque:--{saiyan['poder_ataque']}--{saiyan['habilidades'].split('|')}\n") 
+                archivo.write(f"Nombre: {saiyan['nombre']}, Poder de pelea---{poder_pelea},Poder ataque:--{poder_ataque}--{saiyan['habilidades'].split('|')}\n") 
 
 def aplicacion_DBZ(path:str):
 
@@ -391,5 +391,5 @@ def aplicacion_DBZ(path:str):
                 case 9:
                     break
                 case 10:
-                    agregar_poder_ataque(lista_guerreros)
+                    agregar_poder_saiyans(lista_guerreros)
             opcion = mostrar_menu_principal()
