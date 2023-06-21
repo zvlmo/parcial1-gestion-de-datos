@@ -9,7 +9,7 @@ Este es un ejemplo agrupado de todo lo que vimos hasta ahora en clases con respe
 #ALUMNO
 Matias Di Girolamo 
 DIVISION: 1D
-LEGAJO: 113597
+LEGAJO: *****
 
 #CONSIGNA
 
